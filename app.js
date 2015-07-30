@@ -48,21 +48,46 @@ $(document).ready(function() {
   });
 
 // Iteration 2
-  $('input:checked').on('click', function() {
-    if (this.checked) {
-      var $homeArray = $('.image-container').children();
-      var $checkedValue = +$('input:checked').val()
-      var $result = [];
-      for (var i = 0; i < $homeArray.length; i++) {
-        if (+$homeArray[i].dataset.price < $checkedValue) {
-          $result.push($homeArray[i]);
+  $('.filters').append('<label><input type="checkbox" value="1000000000"/>$1 Mil - tres commas</label>');
+  function createFilter(val, text) {
+    $('.filters').append("<label><input type='checkbox' value=" + val + ">" + text + "</label>");
+   }
+    createFilter(1000000000, 'bil');
+//Iteration 3
+    $('.filters').find('input:checkbox').on("click", function () {
+        var $article = $('article');
+        var atLeastOneIsChecked = $('.filters :checkbox:checked').length;
+
+        if (atLeastOneIsChecked > 0) {
+          $article.hide();
+          $(".filters").find("input:checked").each(function () {
+            console.log($checkedLow);
+            var $checkedLow = Number($(this).parent().prev().children().val());
+
+            for (var i = 0; i < $article.length; i++) {
+              if (isNaN($checkedLow)) {
+                $checkedLow = 0;
+              }else if ($article[i].dataset.price <= +$(this).val() && $article[i].dataset.price >= $checkedLow) {
+                $article.eq(i).show();
+              }
+            }
+          });
+        } else {
+          $article.show();
         }
-      }
-      $('.image-container').html($result);
-    }
-  });
+    });
+
+//Stretch, pagination
+
+  var showPerPage = 6;
+  var numberofCabins = $('.image-container').children().size();
+  var numPages = Math.ceil($numberofCabins / $showPerPage);
+
+  $('.image-container').hide()
+
+
+
 
 
 });
-
 
